@@ -60,8 +60,8 @@ const TipCalculator = () => {
     }, [bill, people, tipPercent]);
 
     return (
-        <div className="md:w-[60vw] md:h-[55vh] bg-white rounded-2xl flex text-darkGrayishCyan">
-            <div className="w-full flex m-6 rounded-2xl text-sm">
+        <div className="md:w-[60vw] md:h-[55vh] w-screen bg-white rounded-2xl flex md:flex-row flex-col text-darkGrayishCyan">
+            <div className="md:w-full flex m-6 rounded-2xl text-sm">
                 <form className="flex flex-col space-y-8 m-2 w-full">
                     <div className="flex flex-col space-y-1">
                         <label htmlFor="bill">Bill</label>
@@ -125,7 +125,7 @@ const TipCalculator = () => {
                 </form>
             </div>
 
-            <div className="w-full flex bg-veryDarkCyan m-6 rounded-2xl ml-3">
+            <div className="md:w-full flex bg-veryDarkCyan m-6 rounded-2xl md:ml-3">
                 <div className="flex flex-col w-full p-8 space-y-8">
                     <div className="flex justify-between">
                         <div className="flex flex-col">
