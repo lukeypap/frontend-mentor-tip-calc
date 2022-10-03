@@ -8,8 +8,8 @@ const TipCalculator = () => {
     const [tipPercent, setTipPercent] = useState(0);
     const [people, setPeople] = useState(1);
     const [total, setTotal] = useState(0);
-    const [selected, setSelected] = useState("");
     const [tipAmount, setTipAmount] = useState(0);
+    const [peopleError, setPeopleError] = useState(false);
 
     const handleBillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -23,9 +23,10 @@ const TipCalculator = () => {
     const handlePeopleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if (e.target.value === "") {
-            setPeople(0);
+            setPeopleError(true);
         } else {
             setPeople(parseInt(e.target.value));
+            setPeopleError(false);
         }
     };
 
@@ -35,7 +36,7 @@ const TipCalculator = () => {
     };
 
     const calculateTotal = (people: number, tipPercent: number, bill: number) => {
-        if (tipPercent === NaN || people === NaN || bill === NaN) {
+        if (tipPercent === NaN || people === NaN || bill === NaN || people === 0) {
             return;
         }
         if (tipPercent === 0) {
@@ -52,7 +53,6 @@ const TipCalculator = () => {
         setBill(0);
         setTipPercent(0);
         setPeople(1);
-        setSelected(0);
     };
 
     useEffect(() => {
@@ -68,9 +68,10 @@ const TipCalculator = () => {
                         <span className="flex items-center">
                             <img src={dollarIcon} className="absolute ml-3" />
                             <input
-                                type="text"
                                 id="bill"
                                 dir="rtl"
+                                placeholder="0"
+                                type="number"
                                 value={bill}
                                 onChange={(e) => handleBillChange(e)}
                                 className="pr-3 w-full text-lg bg-veryLightGrayishCyan text-veryDarkCyan p-1 focus:outline-primary rounded-md"
@@ -87,22 +88,37 @@ const TipCalculator = () => {
                         <div className="space-x-3 text-xl">
                             <Button text="25%" onClick={handleOnClick} tipPercent={tipPercent} />
                             <Button text="50%" onClick={handleOnClick} tipPercent={tipPercent} />
-                            <button className="w-[30%] py-2 rounded-md bg-veryLightGrayishCyan text-darkGrayishCyan">
-                                Custom
-                            </button>
+                            <input
+                                className="p-3 focus:outline-primary text-veryDarkCyan w-[30%] py-2 rounded-md bg-veryLightGrayishCyan"
+                                placeholder="Custom"
+                                dir="rtl"
+                                type="number"
+                                onChange={(e) =>
+                                    setTipPercent(
+                                        e.target.value === "" ? 0 : parseInt(e.target.value)
+                                    )
+                                }
+                            />
                         </div>
                     </div>
                     <div className="flex flex-col space-y-1">
-                        <label htmlFor="bill">Number of People</label>
+                        <div className="flex justify-between">
+                            <label htmlFor="bill">Number of People</label>
+                            <p className={`text-red-500 ${people === 0 ? "visible" : "hidden"}`}>
+                                Can't be Zero
+                            </p>
+                        </div>
                         <span className="flex items-center">
                             <img src={personIcon} className="absolute ml-3" />
                             <input
-                                type="text"
+                                type="number"
                                 id="bill"
                                 dir="rtl"
                                 value={people}
                                 onChange={(e) => handlePeopleChange(e)}
-                                className="pr-3 w-full text-lg bg-veryLightGrayishCyan text-veryDarkCyan p-1 focus:outline-primary rounded-md"
+                                className={`pr-3 w-full text-lg bg-veryLightGrayishCyan text-veryDarkCyan p-1 focus:outline-primary rounded-md ${
+                                    people === 0 ? "outline-red-500 focus:outline-red-500" : null
+                                }`}
                             />
                         </span>
                     </div>
@@ -136,7 +152,7 @@ const TipCalculator = () => {
                     <div className="w-full h-full flex items-end">
                         <button
                             onClick={handleReset}
-                            className="bg-primary px-6 py-2 rounded-md w-full text-veryDarkCyan"
+                            className="hover:bg-opacity-60 bg-primary px-6 py-2 rounded-md w-full text-veryDarkCyan"
                         >
                             RESET
                         </button>

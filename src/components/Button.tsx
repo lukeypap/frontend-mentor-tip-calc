@@ -12,7 +12,7 @@ const Button: React.FC<props> = ({ text, onClick, tipPercent }) => {
             onClick={(e) => {
                 onClick(e, text);
             }}
-            className={`w-[30%] py-2 rounded-md bg-veryDarkCyan ${
+            className={`w-[30%] py-2 rounded-md bg-veryDarkCyan hover:bg-opacity-60 ${
                 text === tipPercent.toString() + "%" ? "bg-primary text-veryDarkCyan" : null
             }`}
         >
